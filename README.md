@@ -6,14 +6,16 @@ This repo contains all the configuration files required to set up a new Kubernet
 
 - [Prerequisites](#prerequisites)
 - [Repository Structure](#repository-structure)
-- [ArgoCD Installation](#argocd-installation)
-  - [Change ArgoCD admin password](#change-argocd-admin-password)
+- [Github Actions](#github-actions)
+- [Running Locally](#running-locally)
+  - [ArgoCD Installation](#argocd-installation)
+    - [Change ArgoCD admin password](#change-argocd-admin-password)
 
 ## Prerequisites
 
 Before using this repository, ensure you have the following:
 
-- A Kubernetes cluster (AKS, EKS, GKE, or on-prem).
+- A newly provisioned Kubernetes cluster (AKS, EKS, GKE, or on-prem).
 - `kubectl` installed and configured.
 - `helm` installed on your local machine.
 
@@ -30,7 +32,15 @@ Before using this repository, ensure you have the following:
 └── README.md                  # This README file
 ```
 
-## ArgoCD Installation
+## Github Actions
+
+Update `KUBECONFIG` in repository secrets with cluster config before running the workflows. Below are the available options:
+
+1. Deploy ArgoCD
+
+## Running Locally
+
+### ArgoCD Installation
 
 To install ArgoCD with Helm, use the below commands.
 
@@ -51,7 +61,7 @@ helm upgrade --install argocd argo/argo-cd \
 
 You can customize the ArgoCD deployment by modifying the `values.yaml` file:
 
-### Change ArgoCD admin password
+#### Change ArgoCD admin password
 
 To change the ArgoCD admin password, use bcrypt to hash a new password like:
 
@@ -59,4 +69,4 @@ To change the ArgoCD admin password, use bcrypt to hash a new password like:
 htpasswd -nbBC 10 "" 'your-new-password' | tr -d ':\n' | sed 's/$2y/$2a/'
 ```
 
-Then replace the value of `adminPassword` field in `values.yaml` file (path: helm/argocd/) with the new hash.
+Then replace the value of `adminPassword` field in `values.yaml` file (path: `./helm/argocd/`) with the new hash.
